@@ -13,7 +13,7 @@ resource "aws_vpc" "main" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway
 
 resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id //attaches the IGW to the VPC created earlier in your configuration (aws_vpc.main).
 
   tags = merge(local.common_tags, var.igw_tags, {
     Name = local.common_name_suffix
