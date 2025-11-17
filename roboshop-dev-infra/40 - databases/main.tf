@@ -71,7 +71,7 @@ resource "terraform_data" "redis" {
     source      = "bootstrap.sh"
     destination = "/tmp/bootstrap.sh"
   }
-  provisioner "remote-exec" { // any code added herer we need to taint this , ony then changes will be applied
+  provisioner "remote-exec" { // any code added here we need to taint this , ony then changes will be applied
     inline = [
       "sudo chmod +x /tmp/bootstrap.sh",
       "sudo sh /tmp/bootstrap.sh redis"
