@@ -36,85 +36,85 @@ resource "terraform_data" "mongodb" {
   }
 }
 
-# #this should be run from bastion, install terraform on bastiono
-# #https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+#this should be run from bastion, install terraform on bastiono
+#https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
 
-# # =============================end of mongodb================================================
+# =============================end of mongodb================================================
 
-# # we are creating redis private server in database subnet this is private subent
+# we are creating redis private server in database subnet this is private subent
 
-# resource "aws_instance" "redis" {
-#   ami                    = local.ami_id
-#   instance_type          = "t3.micro"
-#   vpc_security_group_ids = [local.redis_sg_id] # here we are attaching the redis security group ID which we already created
-#   subnet_id              = local.database_subnet_id
-#   tags = merge(local.common_tags, {
-#     Name = "${local.common_name_prefix}-redis" # roboshop-dev-redis
-#   })
-# }
-
-
-# resource "terraform_data" "redis" {
-#   triggers_replace = [
-#     aws_instance.redis.id
-#   ]
-
-#   connection {
-#     type     = "ssh"
-#     user     = "ec2-user" #  appropriate user for your AMI
-#     password = "DevOps321"
-#     host     = aws_instance.redis.private_ip
-#   }
-
-#   # terraform copies this file to redis server
-#   provisioner "file" {
-#     source      = "bootstrap.sh"
-#     destination = "/tmp/bootstrap.sh"
-#   }
-#   provisioner "remote-exec" { // any code added here we need to taint this , ony then changes will be applied
-#     inline = [
-#       "sudo chmod +x /tmp/bootstrap.sh",
-#       "sudo sh /tmp/bootstrap.sh redis"
-#     ]
-#   }
-# }
-
-# # =============================end of redis================================================
-
-# # we are creating rabbitmq private server in database subnet this is private subent
-
-# resource "aws_instance" "rabbitmq" {
-#   ami                    = local.ami_id
-#   instance_type          = "t3.micro"
-#   vpc_security_group_ids = [local.rabbitmq_sg_id] # here we are attaching the rabbitmq security group ID which we already created
-#   subnet_id              = local.database_subnet_id
-#   tags = merge(local.common_tags, {
-#     Name = "${local.common_name_prefix}-rabbitmq" # roboshop-dev-rabbitmq
-#   })
-# }
+resource "aws_instance" "redis" {
+  ami                    = local.ami_id
+  instance_type          = "t3.micro"
+  vpc_security_group_ids = [local.redis_sg_id] # here we are attaching the redis security group ID which we already created
+  subnet_id              = local.database_subnet_id
+  tags = merge(local.common_tags, {
+    Name = "${local.common_name_prefix}-redis" # roboshop-dev-redis
+  })
+}
 
 
-# resource "terraform_data" "rabbitmq" {
-#   triggers_replace = [
-#     aws_instance.rabbitmq.id
-#   ]
+resource "terraform_data" "redis" {
+  triggers_replace = [
+    aws_instance.redis.id
+  ]
 
-#   connection {
-#     type     = "ssh"
-#     user     = "ec2-user" #  appropriate user for your AMI
-#     password = "DevOps321"
-#     host     = aws_instance.rabbitmq.private_ip
-#   }
+  connection {
+    type     = "ssh"
+    user     = "ec2-user" #  appropriate user for your AMI
+    password = "DevOps321"
+    host     = aws_instance.redis.private_ip
+  }
 
-#   # terraform copies this file to mongodb server
-#   provisioner "file" {
-#     source      = "bootstrap.sh"
-#     destination = "/tmp/bootstrap.sh"
-#   }
-#   provisioner "remote-exec" { // any code added herer we need to taint this , ony then changes will be applied
-#     inline = [
-#       "sudo chmod +x /tmp/bootstrap.sh",
-#       "sudo sh /tmp/bootstrap.sh rabbitmq"
-#     ]
-#   }
-# }
+  # terraform copies this file to redis server
+  provisioner "file" {
+    source      = "bootstrap.sh"
+    destination = "/tmp/bootstrap.sh"
+  }
+  provisioner "remote-exec" { // any code added here we need to taint this , ony then changes will be applied
+    inline = [
+      "sudo chmod +x /tmp/bootstrap.sh",
+      "sudo sh /tmp/bootstrap.sh redis"
+    ]
+  }
+}
+
+# =============================end of redis================================================
+
+# we are creating rabbitmq private server in database subnet this is private subent
+
+resource "aws_instance" "rabbitmq" {
+  ami                    = local.ami_id
+  instance_type          = "t3.micro"
+  vpc_security_group_ids = [local.rabbitmq_sg_id] # here we are attaching the rabbitmq security group ID which we already created
+  subnet_id              = local.database_subnet_id
+  tags = merge(local.common_tags, {
+    Name = "${local.common_name_prefix}-rabbitmq" # roboshop-dev-rabbitmq
+  })
+}
+
+
+resource "terraform_data" "rabbitmq" {
+  triggers_replace = [
+    aws_instance.rabbitmq.id
+  ]
+
+  connection {
+    type     = "ssh"
+    user     = "ec2-user" #  appropriate user for your AMI
+    password = "DevOps321"
+    host     = aws_instance.rabbitmq.private_ip
+  }
+
+  # terraform copies this file to mongodb server
+  provisioner "file" {
+    source      = "bootstrap.sh"
+    destination = "/tmp/bootstrap.sh"
+  }
+  provisioner "remote-exec" { // any code added herer we need to taint this , ony then changes will be applied
+    inline = [
+      "sudo chmod +x /tmp/bootstrap.sh",
+      "sudo sh /tmp/bootstrap.sh rabbitmq"
+    ]
+  }
+}
