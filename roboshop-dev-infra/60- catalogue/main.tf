@@ -30,7 +30,7 @@ resource "terraform_data" "catalogue" {
   provisioner "remote-exec" { // any code added here we need to taint this , ony then changes will be applied, terraform taint - terraform taint terraform_data.mongodb
     inline = [
       "sudo chmod +x /tmp/catalogue.sh",
-      "sudo sh /tmp/catalogue.sh catalogue"
+      "sudo sh /tmp/catalogue.sh catalogue ${var.environment}"
     ]
   }
 }
