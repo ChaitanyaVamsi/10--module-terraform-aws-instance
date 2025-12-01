@@ -139,7 +139,7 @@ resource "aws_instance" "mysql" {
 
 resource "aws_iam_instance_profile" "mysql" {
   name = "mysql"
-  role = "EC2-SSM-Paramerter-read"
+  role = "EC2-SSM-Paramerter-read" // this role is maually created we are just attching this to mysql instance profile
 }
 
 
