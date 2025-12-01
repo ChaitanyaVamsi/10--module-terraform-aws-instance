@@ -194,6 +194,7 @@ resource "aws_route53_record" "mysql" {
   ttl             = 300
   records         = [aws_instance.mysql.private_ip]
   allow_overwrite = true
+  depends_on      = [aws_instance.mysql]
 }
 
 resource "aws_route53_record" "rabbitmq" {
