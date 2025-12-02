@@ -127,7 +127,7 @@ resource "aws_instance" "mysql" {
   instance_type          = "t3.micro"
   vpc_security_group_ids = [local.mysql_sg_id] # here we are attaching the mysql security group ID which we already created
   subnet_id              = local.database_subnet_id
-  iam_instance_profile   = aws_iam_instance_profile.mysql.name
+  iam_instance_profile   = aws_iam_instance_profile.mysql.name //data.aws_iam_instance_profile.mysql.name
 
   tags = merge(local.common_tags, {
     Name = "${local.common_name_prefix}-mysql" # roboshop-dev-mysql
@@ -138,10 +138,12 @@ resource "aws_instance" "mysql" {
 # refer : https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile
 
 resource "aws_iam_instance_profile" "mysql" {
-  name = "mysql"
-  role = "EC2-SSM-Paramerter-read" // this role is maually created we are just attching this to mysql instance profile
+  name = "mysql_profile"
+  role = "EC2-SSM-Parameter-read" // this role is maually created we are just attching this to mysql instance profile
 }
-
+# data "aws_iam_instance_profile" "mysql" {
+#   name = "mysql"
+# }
 
 resource "terraform_data" "mysql" {
   triggers_replace = [
