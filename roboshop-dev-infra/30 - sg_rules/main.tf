@@ -62,3 +62,12 @@ resource "aws_security_group_rule" "catalogue_bastion" {
   protocol                 = "tcp"
   to_port                  = 22
 }
+
+resource "aws_security_group_rule" "mongdb_catalogue" { // enable this sg only then catalogue connect to mongodb other wise errro
+  type                     = "ingress"
+  security_group_id        = local.mongodb_sg_id // this is for mongodb security group we allow traffic from catalogue sg
+  source_security_group_id = local.catalogue_sg_id
+  from_port                = 27017
+  protocol                 = "tcp"
+  to_port                  = 27017
+}
