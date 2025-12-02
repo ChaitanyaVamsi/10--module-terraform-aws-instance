@@ -24,7 +24,7 @@ resource "terraform_data" "catalogue" {
 
   # terraform copies this file to catalogue server
   provisioner "file" {
-    source      = "bootstrap.sh"
+    source      = "catalogue.sh"
     destination = "/tmp/catalogue.sh"
   }
   provisioner "remote-exec" { // any code added here we need to taint this , ony then changes will be applied, terraform taint - terraform taint terraform_data.mongodb
