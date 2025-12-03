@@ -78,8 +78,6 @@ resource "aws_launch_template" "catalogue_launch_template" {
   image_id                             = aws_ami_from_instance.create_cataogue_ami.id
   instance_initiated_shutdown_behavior = "terminate"
 
-  ram_disk_id = "test"
-
   vpc_security_group_ids = [local.catalogue_sg_id]
 
   # tags for instance
