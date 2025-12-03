@@ -53,7 +53,7 @@ resource "aws_ami_from_instance" "create_cataogue_ami" {
 
 # target group https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group
 resource "aws_lb_target_group" "catalogue_target_group" {
-  name                 = "${local.common_name_prefix}-catalogue" # roboshop-dev-catalogue
+  name                 = "${local.common_name_prefix}-catAalogue" # roboshop-dev-catalogue
   port                 = 8080
   protocol             = "HTTP"
   vpc_id               = local.vpc_id
